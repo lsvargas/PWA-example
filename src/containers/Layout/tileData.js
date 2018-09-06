@@ -28,13 +28,13 @@ export const mailFolderListItems = (
       <ListItemIcon>
         <SendIcon />
       </ListItemIcon>
-      <ListItemText primary="Campeonatos" />
+      <ListItemText primary="Label" />
     </ListItem>
     <ListItem button>
       <ListItemIcon>
         <DraftsIcon />
       </ListItemIcon>
-      <ListItemText primary="Ligas" />
+      <ListItemText primary="Todo" />
     </ListItem>
   </div>
 );

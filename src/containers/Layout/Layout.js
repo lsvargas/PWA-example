@@ -89,7 +89,7 @@ class ResponsiveDrawer extends React.Component {
               <MenuIcon />
             </IconButton>
             <Typography variant="title" color="inherit" noWrap>
-               Sports App
+               Gugle Kip
             </Typography>
           </Toolbar>
         </AppBar>
