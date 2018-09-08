@@ -122,9 +122,7 @@ class ResponsiveDrawer extends React.Component {
         </Hidden>
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          <Typography noWrap>
-            You think water moves fast? You should see ice.
-          </Typography>
+          { this.props.children }
         </main>
       </div>
     );
@@ -132,6 +130,7 @@ class ResponsiveDrawer extends React.Component {
 }
 
 ResponsiveDrawer.propTypes = {
+  children: PropTypes.node.isRequired,
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired,
 };
