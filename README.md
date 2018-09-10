@@ -1,1 +1,1 @@
-# PWA Example Implementation
+# Simple Notes PWA Implementation
