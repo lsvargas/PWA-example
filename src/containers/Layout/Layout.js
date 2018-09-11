@@ -60,7 +60,8 @@ class ResponsiveDrawer extends Component {
   };
 
   render() {
-    const { classes, theme } = this.props;
+    const { classes, theme, children } = this.props;
+    const { mobileOpen } = this.state;
 
     const drawer = (
       <div>
@@ -97,7 +98,7 @@ class ResponsiveDrawer extends Component {
           <Drawer
             variant="temporary"
             anchor={theme.direction === 'rtl' ? 'right' : 'left'}
-            open={this.state.mobileOpen}
+            open={mobileOpen}
             onClose={this.handleDrawerToggle}
             classes={{
               paper: classes.drawerPaper,
@@ -122,7 +123,7 @@ class ResponsiveDrawer extends Component {
         </Hidden>
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          { this.props.children }
+          { children }
         </main>
       </div>
     );

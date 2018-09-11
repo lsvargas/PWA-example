@@ -1,4 +1,4 @@
-export const DB_CONFIG = {
+export default {
   apiKey: 'AIzaSyCr8wZua0pmZXsn8EZOK471px4MN4R9jHk',
   authDomain: 'pwa-example-e4835.firebaseapp.com',
   databaseURL: 'https://pwa-example-e4835.firebaseio.com',

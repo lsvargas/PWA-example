@@ -4,7 +4,7 @@ import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
 import 'firebase/database';
 import firebase from 'firebase/app';
-import { DB_CONFIG } from '../../config/config';
+import DB_CONFIG from '../../config/config';
 import Note from '../../components/Note/Note';
 import NoteForm from '../Forms/NoteForm/NoteForm';
 
@@ -33,7 +33,8 @@ class home extends Component {
   }
 
   componentWillMount() {
-    const previousNotes = this.state.notes;
+    const { notes } = this.state;
+    const previousNotes = notes;
 
     this.database.on('child_added', (snap) => {
       previousNotes.push({
@@ -49,7 +50,7 @@ class home extends Component {
 
 
     this.database.on('child_removed', (snap) => {
-      for (let i = 0; i < previousNotes.length; i++) {
+      for (let i = 0; i < previousNotes.length; i += 1) {
         if (previousNotes[i].id === snap.key) {
           previousNotes.splice(i, 1);
         }
@@ -59,7 +60,6 @@ class home extends Component {
         notes: previousNotes,
       });
     });
-    console.log(this.state);
   }
 
   addNote(note) {
@@ -70,17 +70,18 @@ class home extends Component {
   }
 
   removeNote(noteId) {
-    console.log(`from the parent: ${noteId}`);
     this.database.child(noteId).remove();
   }
 
   render() {
     const { classes } = this.props;
+    const { notes } = this.state;
+
     return (
       <div className={classes.root}>
         <Grid container spacing={24}>
           {
-          this.state.notes.map(x => (
+          notes.map(x => (
             <Grid key={x.id} item xs>
               <Note
                 category={x.label}

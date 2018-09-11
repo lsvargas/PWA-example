@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class NoteForm extends Component {
   constructor(props) {
@@ -18,26 +19,29 @@ class NoteForm extends Component {
   }
 
   writeNote() {
-    this.props.addNote(this.state.newNoteContent);
+    const { newNoteContent } = this.state;
+    const { addNote } = this.props;
+    addNote(newNoteContent);
 
-    // Set newNoteContent back to an empty string.
     this.setState({
       newNoteContent: '',
     });
   }
 
   render() {
+    const { newNoteContent } = this.state;
     return (
       <div className="formWrapper">
         <input
           className="noteInput"
           placeholder="Write a new note..."
-          value={this.state.newNoteContent}
+          value={newNoteContent}
           onChange={this.handleUserInput}
         />
         <button
           className="noteButton"
           onClick={this.writeNote}
+          type="submit"
         >
           Add Note
         </button>
@@ -45,5 +49,9 @@ class NoteForm extends Component {
     );
   }
 }
+
+NoteForm.propTypes = {
+  addNote: PropTypes.func.isRequired,
+};
 
 export default NoteForm;
