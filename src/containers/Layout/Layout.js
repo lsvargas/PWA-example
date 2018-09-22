@@ -10,9 +10,11 @@ import IconButton from '@material-ui/core/IconButton';
 import Hidden from '@material-ui/core/Hidden';
 import Divider from '@material-ui/core/Divider';
 import MenuIcon from '@material-ui/icons/Menu';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { mailFolderListItems, otherMailFolderListItems } from './tileData';
 
 const drawerWidth = 240;
+
 
 const styles = theme => ({
   root: {
@@ -47,6 +49,10 @@ const styles = theme => ({
     flexGrow: 1,
     backgroundColor: theme.palette.background.default,
     padding: theme.spacing.unit * 3,
+  },
+  addIcon: {
+    marginLeft: 'auto',
+    fontSize: '30px',
   },
 });
 
@@ -92,6 +98,10 @@ class ResponsiveDrawer extends Component {
             <Typography variant="title" color="inherit" noWrap>
                Gugle Kip
             </Typography>
+            {false
+              && <FontAwesomeIcon className={classes.addIcon} icon="plus-circle" />
+            }
+
           </Toolbar>
         </AppBar>
         <Hidden mdUp>
