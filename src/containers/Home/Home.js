@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
-import 'firebase/database';
-import firebase from 'firebase/app';
-import DB_CONFIG from '../../config/config';
+
+import { Firebase, notesDatabase } from '../../config/firebase-realtime';
 import Note from '../../components/Note/Note';
 import NoteForm from '../Forms/NoteForm/NoteForm';
 
@@ -22,8 +21,8 @@ const styles = theme => ({
 class home extends Component {
   constructor(props) {
     super(props);
-    this.app = firebase.initializeApp(DB_CONFIG);
-    this.database = this.app.database().ref().child('notes');
+    this.app = Firebase;
+    this.notesDatabase = notesDatabase;
     this.state = {
       notes: [],
     };
@@ -36,7 +35,7 @@ class home extends Component {
     const { notes } = this.state;
     const previousNotes = notes;
 
-    this.database.on('child_added', (snap) => {
+    this.notesDatabase.on('child_added', (snap) => {
       previousNotes.push({
         id: snap.key,
         description: snap.val().description,
@@ -49,7 +48,7 @@ class home extends Component {
     });
 
 
-    this.database.on('child_removed', (snap) => {
+    this.notesDatabase.on('child_removed', (snap) => {
       for (let i = 0; i < previousNotes.length; i += 1) {
         if (previousNotes[i].id === snap.key) {
           previousNotes.splice(i, 1);
@@ -63,14 +62,14 @@ class home extends Component {
   }
 
   addNote(note) {
-    this.database.push().set({
+    this.notesDatabase.push().set({
       description: note,
       label: 'testing',
     });
   }
 
   removeNote(noteId) {
-    this.database.child(noteId).remove();
+    this.notesDatabase.child(noteId).remove();
   }
 
   render() {
