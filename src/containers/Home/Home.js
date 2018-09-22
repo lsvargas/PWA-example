@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
 
-import { Firebase, notesDatabase } from '../../config/firebase-realtime';
+import { notesDatabase } from '../../config/firebase-realtime';
 import Note from '../../components/Note/Note';
 import NoteForm from '../Forms/NoteForm/NoteForm';
 
@@ -21,7 +21,6 @@ const styles = theme => ({
 class home extends Component {
   constructor(props) {
     super(props);
-    this.app = Firebase;
     this.notesDatabase = notesDatabase;
     this.state = {
       notes: [],
