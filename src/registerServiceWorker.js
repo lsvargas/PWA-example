@@ -34,8 +34,9 @@ function urlB64ToUint8Array(base64String) {
 }
 
 export default function register() {
-  if (process.env.NODE_ENV === 'development' && 'serviceWorker' in navigator) {
+  if (process.env.NODE_ENV === 'development' && 'serviceWorker' in navigator && 'PushManager' in window) {
     // The URL constructor is available in all browsers that support SW.
+    console.log('service worker and push is suported');
     const publicUrl = new URL(process.env.PUBLIC_URL, window.location);
     if (publicUrl.origin !== window.location.origin) {
       // Our service worker won't work if PUBLIC_URL is on a different origin
