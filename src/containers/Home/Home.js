@@ -2,10 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
+import axios from 'axios';
 
 import { notesDatabase } from '../../config/firebase-config';
 import Note from '../../components/Note/Note';
 import NoteForm from '../Forms/NoteForm/NoteForm';
+import Axios from 'axios';
+
 
 const styles = theme => ({
   root: {
@@ -61,6 +64,25 @@ class home extends Component {
   }
 
   addNote(note) {
+    const url = 'https://fcm.googleapis.com/fcm/send';
+    const data = {
+      notification: {
+        title: 'firebase',
+        body: 'honj iseme',
+        click_action: 'http://localhost:3000/',
+        icon: 'http://url-to-an-icon/icon.png'
+      },
+      to: 'fXWHY2pEO3c:APA91bFl-swG2HL--Bdafo816pQrMybFhlVLgzql0YpgQNFT9BXKZuU3-k51ERGTM1K_1ChpKC7d_92mg4rDAnYMOC3_vBoVj_zhH0FdWnYwvQtkmoKGJJtMgAiiB2n46NEGN1CRdiAu',
+    };
+    const httpHeaders = {
+      headers: {
+        'Content-Type': 'application/json',
+        authorization: 'Key=AAAAB4-c400:APA91bHQ8grtkLBhl46pUaGTf-EC2CX_m_9GLdsAD6TFF9Geb15PBQPFCK-FBL1AsjLd0FHPZ7zXPNfK8EE08CGOatdSWF5EXMH9xEjuicrnHukENrYW6j0jrgiHc7W4YKCecuGZOksF',
+      },
+    };
+    Axios.post(url, data, httpHeaders)
+      .then(response => console.log(response));
+
     this.notesDatabase.push().set({
       description: note,
       label: 'testing',
