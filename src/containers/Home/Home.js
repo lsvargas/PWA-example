@@ -2,12 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
-import axios from 'axios';
+import Axios from 'axios';
 
 import { notesDatabase } from '../../config/firebase-config';
 import Note from '../../components/Note/Note';
 import NoteForm from '../Forms/NoteForm/NoteForm';
-import Axios from 'axios';
 
 
 const styles = theme => ({
