@@ -46,7 +46,7 @@ export default function register() {
     }
 
     window.addEventListener('load', () => {
-      const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`;
+      const swUrl = `${process.env.PUBLIC_URL}/service-worker-custom.js`;
 
       if (isLocalhost) {
         // This is running on localhost. Lets check if a service worker still exists or not.
@@ -80,7 +80,7 @@ function registerValidSW(swUrl) {
   navigator.serviceWorker
     .register(swUrl)
     .then((registration) => {
-      registration.showNotification('Se esta registrando el service worker');
+      //registration.showNotification('Se esta registrando el service worker');
       const applicationServerKeyConst = urlB64ToUint8Array(applicationServerPublicKey);
       registration.pushManager.subscribe({
         userVisibleOnly: true,
