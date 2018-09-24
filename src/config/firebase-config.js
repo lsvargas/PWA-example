@@ -1,12 +1,10 @@
-import { Firebase } from './firebase-realtime';
+import firebase from 'firebase';
+import DB_CONFIG from './config';
 
-const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`;
+export const Firebase = firebase.initializeApp(DB_CONFIG);
+// add all  the databases here
+export const notesDatabase = Firebase.database().ref().child('notes');
 
-navigator.serviceWorker
-  .register(swUrl)
-  .then((registration) => {
-    Firebase.messaging().useServiceWorker(registration);
-  });
 const askForPermissioToReceiveNotifications = async () => {
   try {
     const messaging = Firebase.messaging();

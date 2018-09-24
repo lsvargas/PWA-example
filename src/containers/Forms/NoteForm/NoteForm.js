@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import askForPermissioToReceiveNotifications from '../../../config/firebase-pushNotifications';
+import askForPermissioToReceiveNotifications from '../../../config/firebase-config';
 
 class NoteForm extends Component {
   constructor(props) {
