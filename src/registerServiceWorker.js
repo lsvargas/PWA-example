@@ -70,6 +70,9 @@ export default function register() {
       console.log('agarre el evento push');
       event.waitUntil(promiseChain);
     });
+    window.addEventListener('fetch', (event) => {
+      console.log(event.request.url);
+    });
   }
 }
 
