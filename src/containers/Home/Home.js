@@ -68,11 +68,11 @@ class home extends Component {
     const data = {
       notification: {
         title: 'firebase',
-        body: 'honj iseme',
+        body: 'honj iseme231231213',
         click_action: 'http://localhost:3000/',
-        icon: 'http://url-to-an-icon/icon.png'
+        icon: 'http://url-to-an-icon/icon.png',
       },
-      to: 'fXWHY2pEO3c:APA91bFl-swG2HL--Bdafo816pQrMybFhlVLgzql0YpgQNFT9BXKZuU3-k51ERGTM1K_1ChpKC7d_92mg4rDAnYMOC3_vBoVj_zhH0FdWnYwvQtkmoKGJJtMgAiiB2n46NEGN1CRdiAu',
+      to: 'ebVp3K-Oslg:APA91bF5_c_2gNkl7tYSFaSEjmziTO_9inkgpKCxE1s0ZBwQHdVJwBzkpLQ3OaWgld6nFC2FwFh7K-BM-u2U_mKuxISZkYtQ6pzGk5poU0K79smnRvWVRgklVOdNIkL2GJieQOip_Csj',
     };
     const httpHeaders = {
       headers: {
