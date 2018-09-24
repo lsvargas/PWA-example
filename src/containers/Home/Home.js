@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
-import 'firebase/database';
-import firebase from 'firebase/app';
-import DB_CONFIG from '../../config/config';
+import Axios from 'axios';
+
+import { notesDatabase } from '../../config/firebase-config';
 import Note from '../../components/Note/Note';
 import NoteForm from '../Forms/NoteForm/NoteForm';
+
 
 const styles = theme => ({
   root: {
@@ -22,8 +23,7 @@ const styles = theme => ({
 class home extends Component {
   constructor(props) {
     super(props);
-    this.app = firebase.initializeApp(DB_CONFIG);
-    this.database = this.app.database().ref().child('notes');
+    this.notesDatabase = notesDatabase;
     this.state = {
       notes: [],
     };
@@ -36,7 +36,7 @@ class home extends Component {
     const { notes } = this.state;
     const previousNotes = notes;
 
-    this.database.on('child_added', (snap) => {
+    this.notesDatabase.on('child_added', (snap) => {
       previousNotes.push({
         id: snap.key,
         description: snap.val().description,
@@ -49,7 +49,7 @@ class home extends Component {
     });
 
 
-    this.database.on('child_removed', (snap) => {
+    this.notesDatabase.on('child_removed', (snap) => {
       for (let i = 0; i < previousNotes.length; i += 1) {
         if (previousNotes[i].id === snap.key) {
           previousNotes.splice(i, 1);
@@ -63,14 +63,33 @@ class home extends Component {
   }
 
   addNote(note) {
-    this.database.push().set({
+    const url = 'https://fcm.googleapis.com/fcm/send';
+    const data = {
+      notification: {
+        title: 'firebase',
+        body: 'honj iseme231231213',
+        click_action: 'http://localhost:3000/',
+        icon: 'http://url-to-an-icon/icon.png',
+      },
+      to: 'ebVp3K-Oslg:APA91bF5_c_2gNkl7tYSFaSEjmziTO_9inkgpKCxE1s0ZBwQHdVJwBzkpLQ3OaWgld6nFC2FwFh7K-BM-u2U_mKuxISZkYtQ6pzGk5poU0K79smnRvWVRgklVOdNIkL2GJieQOip_Csj',
+    };
+    const httpHeaders = {
+      headers: {
+        'Content-Type': 'application/json',
+        authorization: 'Key=AAAAB4-c400:APA91bHQ8grtkLBhl46pUaGTf-EC2CX_m_9GLdsAD6TFF9Geb15PBQPFCK-FBL1AsjLd0FHPZ7zXPNfK8EE08CGOatdSWF5EXMH9xEjuicrnHukENrYW6j0jrgiHc7W4YKCecuGZOksF',
+      },
+    };
+    Axios.post(url, data, httpHeaders)
+      .then(response => console.log(response));
+
+    this.notesDatabase.push().set({
       description: note,
       label: 'testing',
     });
   }
 
   removeNote(noteId) {
-    this.database.child(noteId).remove();
+    this.notesDatabase.child(noteId).remove();
   }
 
   render() {

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import askForPermissioToReceiveNotifications from '../../../config/firebase-config';
 
 class NoteForm extends Component {
   constructor(props) {
@@ -44,6 +45,9 @@ class NoteForm extends Component {
           type="submit"
         >
           Add Note
+        </button>
+        <button type="button" onClick={askForPermissioToReceiveNotifications}>
+          Push notification
         </button>
       </div>
     );

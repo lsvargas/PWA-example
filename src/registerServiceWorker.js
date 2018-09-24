@@ -8,6 +8,7 @@
 // To learn more about the benefits of this model, read https://goo.gl/KwvDNy.
 // This link also includes instructions on opting out of this behavior.
 
+const applicationServerPublicKey = 'BFbv4YkqjHiMlGG0yiI6ivCzwaGiXBBMqYownr8-xFMONx5fcMAvwCn7p0gM6GLPXVQ6S11za6Pf4TVA2WSKsCM';
 const isLocalhost = Boolean(
   window.location.hostname === 'localhost'
     // [::1] is the IPv6 localhost address.
@@ -17,10 +18,25 @@ const isLocalhost = Boolean(
       /^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/,
     ),
 );
+function urlB64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - base64String.length % 4) % 4);
+  const base64 = (base64String + padding)
+    .replace(/\-/g, '+')
+    .replace(/_/g, '/');
+
+  const rawData = window.atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
+}
 
 export default function register() {
-  if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
+  if (process.env.NODE_ENV === 'development' && 'serviceWorker' in navigator && 'PushManager' in window) {
     // The URL constructor is available in all browsers that support SW.
+    console.log('service worker and push is suported');
     const publicUrl = new URL(process.env.PUBLIC_URL, window.location);
     if (publicUrl.origin !== window.location.origin) {
       // Our service worker won't work if PUBLIC_URL is on a different origin
@@ -49,6 +65,11 @@ export default function register() {
         registerValidSW(swUrl);
       }
     });
+    window.addEventListener('push', (event) => {
+      const promiseChain = window.registration.showNotification('Hello, World.');
+      console.log('agarre el evento push');
+      event.waitUntil(promiseChain);
+    });
   }
 }
 
@@ -56,6 +77,14 @@ function registerValidSW(swUrl) {
   navigator.serviceWorker
     .register(swUrl)
     .then((registration) => {
+      registration.showNotification('Se esta registrando el service worker');
+      const applicationServerKeyConst = urlB64ToUint8Array(applicationServerPublicKey);
+      registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: applicationServerKeyConst,
+      }).then((subscription) => {
+        console.log('user is subscribed.');
+      });
       registration.onupdatefound = () => {
         const installingWorker = registration.installing;
         installingWorker.onstatechange = () => {
@@ -99,6 +128,7 @@ function checkValidServiceWorker(swUrl) {
       } else {
         // Service worker found. Proceed as normal.
         registerValidSW(swUrl);
+        console.log('estamos bien');
       }
     })
     .catch(() => {
@@ -107,6 +137,7 @@ function checkValidServiceWorker(swUrl) {
       );
     });
 }
+
 
 export function unregister() {
   if ('serviceWorker' in navigator) {
