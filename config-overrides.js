@@ -8,6 +8,7 @@ module.exports = function override(config, env) {
     const workboxConfig = {
       ...defaultInjectConfig,
       swSrc: path.join(__dirname, 'src', 'custom-sw.js'),
+      importWorkboxFrom: 'local',
     };
     config = rewireWorkboxInject(workboxConfig)(config, env);
   }
