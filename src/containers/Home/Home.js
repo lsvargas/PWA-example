@@ -50,7 +50,7 @@ class home extends Component {
           id: snap.key,
           tokenId: snap.val().tokenId,
         });
-        this.setState({tokens: previousTokens })
+        this.setState({ tokens: previousTokens });
       });
       this.setState({
         notes: previousNotes,
@@ -72,6 +72,7 @@ class home extends Component {
   }
 
   addNote(note) {
+    /*
     const { tokens } = this.state;
     const url = 'https://fcm.googleapis.com/fcm/send';
     const data = {
@@ -91,7 +92,7 @@ class home extends Component {
     };
     Axios.post(url, data, httpHeaders)
       .then(response => console.log(response));
-
+    */
     this.notesDatabase.push().set({
       description: note,
       label: 'testing',
