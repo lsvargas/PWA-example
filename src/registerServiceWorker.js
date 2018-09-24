@@ -1,3 +1,4 @@
+import idb from 'idb';
 // In production, we register a service worker to serve assets from local cache.
 
 // This lets the app load faster on subsequent visits in production, and gives
@@ -32,6 +33,16 @@ function urlB64ToUint8Array(base64String) {
   }
   return outputArray;
 }
+function createDB() {
+  idb.open('products', 1, (upgradeDB) => {
+    let store = upgradeDB.createObjectStore('beverages', {
+      keyPath: 'id',
+    });
+    store.put({id: 123, name: 'coke', price: 10.99, quantity: 200});
+    store.put({id: 321, name: 'pepsi', price: 8.99, quantity: 100});
+    store.put({id: 222, name: 'water', price: 11.99, quantity: 300});
+  });
+}
 
 export default function register() {
   if (process.env.NODE_ENV === 'development' && 'serviceWorker' in navigator && 'PushManager' in window) {
@@ -65,6 +76,12 @@ export default function register() {
         registerValidSW(swUrl);
       }
     });
+    window.addEventListener('install', (event) => {
+      console.log('se va a guardar la base de datos');
+      event.waitUntil(
+        createDB()
+      );
+    });
     window.addEventListener('push', (event) => {
       const promiseChain = window.registration.showNotification('Hello, World.');
       console.log('agarre el evento push');
@@ -80,7 +97,7 @@ function registerValidSW(swUrl) {
   navigator.serviceWorker
     .register(swUrl)
     .then((registration) => {
-      registration.showNotification('Se esta registrando el service worker');
+      // registration.showNotification('Se esta registrando el service worker');
       const applicationServerKeyConst = urlB64ToUint8Array(applicationServerPublicKey);
       registration.pushManager.subscribe({
         userVisibleOnly: true,
@@ -140,6 +157,7 @@ function checkValidServiceWorker(swUrl) {
       );
     });
 }
+
 
 
 export function unregister() {

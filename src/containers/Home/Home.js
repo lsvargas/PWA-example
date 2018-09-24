@@ -4,7 +4,7 @@ import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
 import Axios from 'axios';
 
-import { notesDatabase } from '../../config/firebase-config';
+import { notesDatabase, tokensDatabase } from '../../config/firebase-config';
 import Note from '../../components/Note/Note';
 import NoteForm from '../Forms/NoteForm/NoteForm';
 
@@ -24,8 +24,10 @@ class home extends Component {
   constructor(props) {
     super(props);
     this.notesDatabase = notesDatabase;
+    this.tokensDatabase = tokensDatabase;
     this.state = {
       notes: [],
+      tokens: [],
     };
 
     this.addNote = this.addNote.bind(this);
@@ -33,7 +35,8 @@ class home extends Component {
   }
 
   componentWillMount() {
-    const { notes } = this.state;
+    const { notes, tokens } = this.state;
+    const previousTokens = tokens;
     const previousNotes = notes;
 
     this.notesDatabase.on('child_added', (snap) => {
@@ -42,7 +45,13 @@ class home extends Component {
         description: snap.val().description,
         label: snap.val().label,
       });
-
+      this.tokensDatabase.on('child_added', (snap) => {
+        tokens.push({
+          id: snap.key,
+          tokenId: snap.val().tokenId,
+        });
+        this.setState({tokens: previousTokens })
+      });
       this.setState({
         notes: previousNotes,
       });
@@ -63,15 +72,16 @@ class home extends Component {
   }
 
   addNote(note) {
+    const { tokens } = this.state;
     const url = 'https://fcm.googleapis.com/fcm/send';
     const data = {
       notification: {
-        title: 'firebase',
-        body: 'honj iseme231231213',
-        click_action: 'http://localhost:3000/',
+        title: 'Gugle kip',
+        body: 'Se ha creado una nueva nota',
+        click_action: 'http://https://pwa-example-e4835.firebaseapp.com/',
         icon: 'http://url-to-an-icon/icon.png',
       },
-      to: 'eNoGWSsWZMI:APA91bG9MouWrWFSRNJGsTnNxQFGXw8IYAqMYcIBLzt8HQBd1rdQjjBNjE6C_Z-0IbNbI-mssrhQL3aSLwXYLmc1Gs8FEH-WAjykLmiWYLqDosyU73uAuZHHTprSac2Uge-yTO82JwNq',
+      to: tokens[tokens.length - 1].tokenId,
     };
     const httpHeaders = {
       headers: {
